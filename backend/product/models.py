@@ -47,10 +47,10 @@ class Book(models.Model):
     name = models.CharField(_('name'), max_length=100)
     description = models.TextField(_('description'))
     slug = models.SlugField(max_length=100, unique=True, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_books')
     added_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('added_by'))
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name=_('book_author'), related_name='author_book')
-    quantity = models.IntegerField()
-    #stock_amount = models.IntegerField()
+    stock_amount = models.IntegerField()
     image = models.FileField(upload_to=product_image, blank=True, null=True)
     price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -67,8 +67,8 @@ class Book(models.Model):
         verbose_name = _('Book')
         verbose_name_plural = _('Books')
 
-@receiver(post_save, sender=Book)
-def increase_number_of_books(sender, instance, created, **kwargs):
-   if created:
-       instance.author.number_of_books +=1
-       instance.author.save()
+# @receiver(post_save, sender=Book)
+# def increase_number_of_books(sender, instance, created, **kwargs):
+#    if created:
+#        instance.author.number_of_books +=1
+#        instance.author.save()

@@ -6,6 +6,6 @@ class ProductConfig(AppConfig):
     name = 'product'
     verbose_name = _('products')
 
-    def ready(self):
-        import models.signals  # noqa
+    # def ready(self):
+    #     import models.signals  # noqa
 
