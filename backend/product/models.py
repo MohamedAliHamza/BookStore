@@ -3,6 +3,8 @@ from user.models import User
 from django.db.models import Sum, F
 from django.utils.translation import gettext_lazy as _
 from .utilities import product_image, author_image, custom_slugify
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Author(models.Model):
@@ -13,7 +15,7 @@ class Author(models.Model):
     image = models.FileField(_('image'),upload_to=author_image, blank=True, null=True)
     
     def save(self, *args, **kwargs):
-        self.number_of_books = self.author_book.count()
+        #self.number_of_books = self.author_book.count()
         self.slug = custom_slugify(self.name)
         super().save(*args, **kwargs)
 
@@ -48,6 +50,7 @@ class Book(models.Model):
     added_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('added_by'))
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name=_('book_author'), related_name='author_book')
     quantity = models.IntegerField()
+    #stock_amount = models.IntegerField()
     image = models.FileField(upload_to=product_image, blank=True, null=True)
     price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -64,43 +67,8 @@ class Book(models.Model):
         verbose_name = _('Book')
         verbose_name_plural = _('Books')
 
-## => create signal when add book, number of books of author increased by one 
-
-
-# class ShopCart(models.Model):
-#     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_shopcart')
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='shopcart_product')
-#     quantity = models.IntegerField(default=1)
-
-#     def item_cost(self):
-#         return self.quantity * self.product.price
-
-#     def __str__(self):
-#         return f"client: {self.client} product: {self.product} quantity: {self.quantity} price: {self.item_cost()} "
-
-#     class Meta:
-#         verbose_name = _('ShopCart')
-#         verbose_name_plural = _('ShopCarts')
-
-
-# # create order => to order => Order , BoughtItems
-# class Order(models.Model):
-#     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_user')
-#     ordered_date = models.DateTimeField(auto_now_add=True)
-#     total_price = models.FloatField(default=0)
-
-#     def __str__(self):
-#         return f"client: {self.client} price: {self.total_price}"
-
-
-# class BoughtItem(models.Model):
-#     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='boughtitem_product')
-#     quantity = models.PositiveIntegerField(default=1)
-#     price = models.FloatField(default=0)
-
-#     def item_price(self):
-#         return self.price * self.quantity
-
-#     def __str__(self):
-#         return f"Order: {self.order} product: {self.product} quantity: {self.quantity} price: {self.item_price()}"
+@receiver(post_save, sender=Book)
+def increase_number_of_books(sender, instance, created, **kwargs):
+   if created:
+       instance.author.number_of_books +=1
+       instance.author.save()
