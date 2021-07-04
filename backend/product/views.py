@@ -20,10 +20,9 @@ class CategoryView(generics.ListAPIView):
        permission_class =[]       
 
 class CategoryDetail(generics.RetrieveAPIView):
-       # def get_object(self, pk):
-       #  return get_object_or_404(Category, pk)
        def get_queryset(self):
-              return Book.objects.filter(category_id=lookup_field.pk)
+              obj = self.kwargs['pk'] 
+              return Book.objects.filter(category_id=obj)
 
        serializer_class = BookSerializer
        permission_class =[]       
