@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     #apps 
     'user',
     'product',
+    'shopcart',
     'order',
     # third party apps
     'rest_framework',  
