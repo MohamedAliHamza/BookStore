@@ -1,23 +1,36 @@
 from rest_framework import serializers
 from .models import Book, Category, Author
 from user.serializer import UserSerializer
+from rest_framework.reverse import reverse
+from user.models import User
 
 class AuthorSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=100)  
-    brief = serializers.CharField(style={'base_template': 'textarea.html'})
-    number_of_books = serializers.IntegerField(default=0)
-    image = serializers.FileField()
+       name = serializers.CharField(max_length=100)  
+       brief = serializers.CharField(style={'base_template': 'textarea.html'})
+       number_of_books = serializers.IntegerField(default=0)
+       image = serializers.FileField()
 
 class CategorySerializer(serializers.Serializer):
        name = serializers.CharField(max_length=100)
+       links = serializers.SerializerMethodField('get_links')
+
+       def get_links(self, obj): 
+              request = self.context['request']
+              return {
+                     'category detail': reverse('category-detail',
+                     kwargs={'pk': obj.pk}, request=request),
+                     }
 
 class BookSerializer(serializers.Serializer):
-       #id = serializers.IntegerField()
+       #id = serializers.IntegerField() 
        name = serializers.CharField(max_length=100)
        description = serializers.CharField(style={'base_template': 'textarea.html'})
-       category = CategorySerializer()
-       added_by = UserSerializer()
-       author   = AuthorSerializer()
+       category = serializers.SlugRelatedField(slug_field='name', read_only=True) 
+       added_by = serializers.SlugRelatedField(slug_field='email', read_only=True)
+       #author = serializers.SlugRelatedField(slug_field='name', read_only=True)
+       #  
+       # ERROR: Return book slug instead of author slug 
+       author = serializers.HyperlinkedIdentityField(view_name='author-detail',lookup_field = 'slug')
        #stock_amount = serializers.IntegerField()
        image = serializers.FileField()
        price = serializers.FloatField()
