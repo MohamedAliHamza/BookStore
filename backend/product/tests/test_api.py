@@ -1,6 +1,6 @@
 import pytest
 from product.models import Category, Book, Author
-from product.serializer import CategorySerializer 
+from product.serializer import CategorySerializer, BookSerializer, AuthorSerializer
 from django.urls import reverse
 from rest_framework.test import APIClient
 from mixer.backend.django import mixer
@@ -26,3 +26,28 @@ class TestCategory():
               serializer = CategorySerializer(categories, many=True)
               assert response.data == serializer.data
               assert response.status_code == 200
+
+       def test_category_detail(self, setup_category):
+              book = mixer.blend(Book, category=setup_category[0])
+              response = client.get(reverse('category_detail', kwargs={'pk':setup_category[0].id } ))    
+              serializer = BookSerializer(book)
+              assert response.status_code == 200
+              assert response.data == serializer.data
+
+
+@pytest.mark.django_db
+class TestBook():
+
+       @pytest.fixture
+       def setup_book(self):
+              book1 = mixer.blend(Book)
+              book2 = mixer.blend(Book)
+              return book1, book2
+
+       def test_book_list(self, setup_book):
+              response = client.get(reverse('book_list')) 
+              assert response.status_code == 200
+              books = Book.objects.all()
+              serializer = BookSerializer(books, many = True)
+              assert books.count() == 2
+              assert response.data == serializer.data
