@@ -29,7 +29,7 @@ class TestCategory():
 
        def test_category_detail(self, setup_category):
               book = mixer.blend(Book, category=setup_category[0])
-              response = client.get(reverse('category_detail', kwargs={'pk':setup_category[0].id } ))    
+              response = client.get(reverse('category-detail', kwargs={'slug':setup_category[0].slug } ))    
               serializer = BookSerializer(book)
               assert response.status_code == 200
               assert response.data == serializer.data
@@ -51,3 +51,18 @@ class TestBook():
               serializer = BookSerializer(books, many = True)
               assert books.count() == 2
               assert response.data == serializer.data
+
+@pytest.mark.django_db
+class TestAuthor:
+       @pytest.fixture
+       def setup_author(self):
+              return mixer.blend(Author), mixer.blend(Author)
+
+       def test_author_list(self, setup_author):
+              response = client.get(reverse('authors'))
+              authors = Author.objects.all()
+              serializer = AuthorSerializer(authors, many=True)
+              assert response.status_code == 200
+              assert authors.count() == 2
+              assert response.data == serializer.data
+
