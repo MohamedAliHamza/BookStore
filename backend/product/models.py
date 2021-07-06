@@ -67,8 +67,9 @@ class Book(models.Model):
         verbose_name = _('Book')
         verbose_name_plural = _('Books')
 
-# @receiver(post_save, sender=Book)
-# def increase_number_of_books(sender, instance, created, **kwargs):
-#    if created:
-#        instance.author.number_of_books +=1
-#        instance.author.save()
+@receiver(post_save, sender=Book)
+def increase_number_of_books(sender, instance, created, **kwargs):
+   ''' Increase author's books by one when create new book'''
+   if created:
+       instance.author.number_of_books +=1
+       instance.author.save()
