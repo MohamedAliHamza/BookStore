@@ -51,6 +51,7 @@ class Book(models.Model):
     added_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('added_by'))
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name=_('book_author'), related_name='author_book')
     stock_amount = models.IntegerField()
+    available = models.BooleanField(default=True)
     image = models.FileField(upload_to=product_image, blank=True, null=True)
     price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)

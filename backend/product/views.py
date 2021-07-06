@@ -40,6 +40,6 @@ class CategoryDetailView(generics.RetrieveAPIView):
 
 class BookView(generics.ListAPIView):
        ''' API endpoint for listing books '''
-       queryset = Book.objects.all()
+       queryset = Book.objects.filter(available=True) 
        serializer_class = BookSerializer
        permission_classes = []

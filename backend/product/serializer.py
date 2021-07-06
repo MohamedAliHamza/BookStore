@@ -12,7 +12,7 @@ class AuthorSerializer(serializers.Serializer):
 
 class CategorySerializer(serializers.Serializer):
        name = serializers.CharField(max_length=100)
-       links = serializers.SerializerMethodField('get_links')
+       detail = serializers.SerializerMethodField('get_links')
 
        def get_links(self, obj): 
               request = self.context['request']
@@ -27,10 +27,10 @@ class BookSerializer(serializers.Serializer):
        description = serializers.CharField(style={'base_template': 'textarea.html'})
        category = serializers.SlugRelatedField(slug_field='name', read_only=True) 
        added_by = serializers.SlugRelatedField(slug_field='email', read_only=True)
-       #author = serializers.SlugRelatedField(slug_field='name', read_only=True)
-       #  
+       author = serializers.SlugRelatedField(slug_field='name', read_only=True)
        # ERROR: Return book slug instead of author slug 
-       author = serializers.HyperlinkedIdentityField(view_name='author-detail',lookup_field = 'slug')
+       #author = serializers.HyperlinkedIdentityField(view_name='author-detail',lookup_field = 'slug')
        #stock_amount = serializers.IntegerField()
+       available = serializers.BooleanField()
        image = serializers.FileField()
        price = serializers.FloatField()
