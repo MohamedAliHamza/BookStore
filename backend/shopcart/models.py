@@ -5,8 +5,8 @@ from product.models import Book
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-class ShopCartItem(models.Model):
-   client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_shopcart', blank=True, null=True)
+class ShopCart(models.Model):
+   client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shopcart_item', blank=True, null=True)
    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='shopcart_books')
    quantity = models.PositiveSmallIntegerField(default=1)
 
