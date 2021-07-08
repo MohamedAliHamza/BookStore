@@ -10,6 +10,7 @@ def upload_avatar(instance, filename):
 
 
 class UserManager(BaseUserManager):
+    use_in_migrations = True
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('User must have an email address')
@@ -61,6 +62,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-    # @property    
-    # def total_cart_price(self):
-    #     return self.user_ShopCart.aggregate(total=Sum(F('product__price') * F('quantity') , output_field=FloatField()) )['total']
+    @property    
+    def total_cart_price(self):
+        return self.shopcart_item.aggregate(total=Sum(F('book__price') * F('quantity') , output_field=FloatField()) )['total']
