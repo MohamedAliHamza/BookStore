@@ -18,8 +18,9 @@ class ShopCartView(generics.ListCreateAPIView):
     serializer_class = ShopCartSerializer
     permission_classes = [IsAuthenticated, IsOwner]
 
-
-class ShopCartItemDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ShopCart.objects.all()
+class ShopCartDetailView(generics.RetrieveUpdateDestroyAPIView):
+    ''' API endpoint for shopcart detail, just owner can access it '''
+    def get_object(self):
+        return get_object_or_404(ShopCart, id=self.kwargs['pk'])
     serializer_class = ShopCartSerializer 
-    permission_classes = [IsOwner]
+    permission_classes = [IsAuthenticated, IsOwner]
