@@ -2,7 +2,7 @@
 
 🛒It is a website that allows users to order books online.
 
-## Setup
+## Setup & launch
 ```
 git clone https://github.com/MohamedAliHamza/BookStore.git
 cd bookstore\backend
