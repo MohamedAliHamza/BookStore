@@ -3,8 +3,6 @@ from user.models import User
 from django.db.models import Sum, F
 from django.utils.translation import gettext_lazy as _
 from .utilities import product_image, author_image, custom_slugify
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Author(models.Model):
@@ -68,9 +66,3 @@ class Book(models.Model):
         verbose_name = _('Book')
         verbose_name_plural = _('Books')
 
-@receiver(post_save, sender=Book)
-def increase_number_of_books(sender, instance, created, **kwargs):
-   ''' Increase author's books by one when create new book'''
-   if created:
-       instance.author.number_of_books +=1
-       instance.author.save()

@@ -32,8 +32,8 @@ class CategoryView(generics.ListAPIView):
 class CategoryDetailView(generics.RetrieveAPIView):
        ''' API endpoint for detail about specific category '''
        def get_queryset(self):
-              obj = self.kwargs['pk'] 
-              return Book.objects.filter(category_id=obj)
+              obj = self.kwargs['slug'] 
+              return Book.objects.filter(category_slug=obj)
 
        serializer_class = BookSerializer
        permission_class =[]       

@@ -4,6 +4,9 @@ from user.serializer import UserSerializer
 from rest_framework.reverse import reverse
 from user.models import User
 
+'''
+I do not need `ModelSerializer` because all operations `CRUD` except `Read` I will do it from admin pannel.
+'''
 class AuthorSerializer(serializers.Serializer):
        name = serializers.CharField(max_length=100)  
        brief = serializers.CharField(style={'base_template': 'textarea.html'})
@@ -30,7 +33,7 @@ class BookSerializer(serializers.Serializer):
        author = serializers.SlugRelatedField(slug_field='name', read_only=True)
        # ERROR: Return book slug instead of author slug 
        #author = serializers.HyperlinkedIdentityField(view_name='author-detail',lookup_field = 'slug')
-       #stock_amount = serializers.IntegerField()
+       stock_amount = serializers.IntegerField()
        available = serializers.BooleanField()
        image = serializers.FileField()
        price = serializers.FloatField()

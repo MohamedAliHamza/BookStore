@@ -8,7 +8,7 @@ urlpatterns = [
 
        # Category URLS
        path('categories/', views.CategoryView.as_view(), name='categories'),
-       path('category/<int:pk>/', views.CategoryDetailView.as_view(), name='category-detail'),
+       path('category/<slug:slug>/', views.CategoryDetailView.as_view(), name='category-detail'),
 
        # Book URLS
        path('books/', views.BookView.as_view(), name='book_list'),
