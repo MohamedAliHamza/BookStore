@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import ShopCartItem
+from .models import ShopCart
 
-admin.site.register(ShopCartItem)
+admin.site.register(ShopCart)
