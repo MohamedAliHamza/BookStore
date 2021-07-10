@@ -1,7 +1,22 @@
 from rest_framework import serializers
 from .models import Order
+from django.utils.translation import ugettext_lazy as _
 
-class OrderSerializer(serializers.ModelSerializer):
-       class Meta:
-              model = Order
-              fields = ['id', 'client', 'mobile', 'address', 'paid', 'status', 'total_price']
+class OrderSerializer(serializers.Serializer): 
+       client_id = serializers.IntegerField(read_only=True)
+       mobile = serializers.CharField(max_length=125)
+       ordered_date = serializers.DateTimeField(read_only=True)
+       address = serializers.CharField(max_length=125)
+       paid = serializers.BooleanField(read_only=True) 
+       status = serializers.CharField(read_only=True)
+       total_price = serializers.FloatField(read_only=True)
+
+       def create(self, validated_data):
+              user =  self.context['request'].user
+              return Order.objects.create(**validated_data,client=user)
+
+       def validate(self, attrs):
+              user =  self.context['request'].user
+              if user.shopcart_item.all().count() == 0:
+                     raise serializers.ValidationError({"detail":_("Your cart is empty")})                     
+              return attrs       
