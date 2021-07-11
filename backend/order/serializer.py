@@ -14,9 +14,3 @@ class OrderSerializer(serializers.Serializer):
        def create(self, validated_data):
               user =  self.context['request'].user
               return Order.objects.create(**validated_data,client=user)
-
-       def validate(self, attrs):
-              user =  self.context['request'].user
-              if user.shopcart_item.all().count() == 0:
-                     raise serializers.ValidationError({"detail":_("Your cart is empty")})                     
-              return attrs       
