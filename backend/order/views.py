@@ -6,7 +6,7 @@ from rest_framework.serializers import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 class OrderView(generics.ListCreateAPIView):
-    ''' API endpoint for order list, just owner can access it '''
+    ''' API endpoint for order, just owner can access it '''
     def get_queryset(self):
         user  = self.request.user
         return Order.objects.filter(client=user)
