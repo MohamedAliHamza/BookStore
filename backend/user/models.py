@@ -4,6 +4,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Sum, F, FloatField
 from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib import admin
 
 def upload_avatar(instance, filename):
     return 'users/{0}/{1}'.format(instance.id, filename)
@@ -65,3 +66,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property    
     def total_cart_price(self):
         return self.shopcart_item.aggregate(total=Sum(F('book__price') * F('quantity') , output_field=FloatField()) )['total']
+    
