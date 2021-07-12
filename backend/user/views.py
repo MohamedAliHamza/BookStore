@@ -10,3 +10,7 @@ class UserUpdateView(generics.RetrieveUpdateAPIView):
               
        serializer_class = UserSerializer
 
+
+class SignUpView(generics.CreateAPIView):
+       serializer_class = UserSerializer
+       permission_classes = []
