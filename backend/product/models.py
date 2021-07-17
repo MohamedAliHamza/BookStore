@@ -2,7 +2,7 @@ from django.db import models
 from user.models import User
 from django.db.models import Sum, F
 from django.utils.translation import gettext_lazy as _
-from .utilities import product_image, author_image, custom_slugify
+from .utilities import product_image, author_image,category_image, custom_slugify
 
 
 class Author(models.Model):
@@ -29,6 +29,7 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(_('name'), max_length=100)
     slug = models.SlugField(max_length=100, unique=True, null=True, blank=True)
+    background = models.FileField(upload_to=category_image, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = custom_slugify(self.name)

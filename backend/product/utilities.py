@@ -1,3 +1,6 @@
+def category_image(instance, filename):
+    return 'categories/{0}/{1}'.format(instance.id, filename)
+
 def product_image(instance, filename):
     return 'products/{0}/{1}'.format(instance.id, filename)
 

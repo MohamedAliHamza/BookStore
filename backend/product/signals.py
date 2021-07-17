@@ -29,4 +29,4 @@ def increase_number_of_books(sender, instance, created, **kwargs):
               if item.book.stock_amount == 0:
                      item.book.available = False
               item.book.save()
-              item.delete()
+              #item.delete()
