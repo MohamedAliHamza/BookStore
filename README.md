@@ -6,14 +6,21 @@
 
 ## Setup & Launch
 ```
-git clone https://github.com/MohamedAliHamza/BookStore.git
-cd bookstore\backend
-pip install virtualenvwrapper-win
-mkvirtualenv venv
-workon venv
-pip install -r requirement.txt
-python manage.py migrate
-python manage.py runserver
+1. git clone https://github.com/MohamedAliHamza/BookStore.git
+
+2. cd bookstore\backend
+
+3. pip install virtualenvwrapper-win
+
+4. mkvirtualenv venv
+
+5. workon venv
+
+6. pip install -r requirement.txt
+
+7. python manage.py migrate
+
+8. python manage.py runserver
 ```
 ## API Swagger Docs 
 ```
