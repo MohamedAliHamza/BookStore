@@ -1,6 +1,8 @@
 # BOOK-STORE PROJECT
 
-🛒It is a website that allows users to order books online.
+🛒 This is an e-commerce bookstore API based on Django REST Framework. This API features two types of users - Customer and Admin. For authenticating users, Django REST Framework simple jwt is used. The installation guide is given below.
+
+
 
 ## Setup & Launch
 ```
